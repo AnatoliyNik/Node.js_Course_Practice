@@ -1,32 +1,34 @@
-const fs = require('fs');
-const path = require('path');
+import fs from "fs";
+import path from "path";
 
-class Book {
-    static dbPath = path.join(__dirname, '..', 'data', 'mock-data.json');
+export default class Book {
+    static dbPath: string = path.join(__dirname, '..', 'data', 'mock-data.json');
 
-    constructor(title, author) {
+    id?: string;
+
+    constructor(public title: string, public author: string) {
         this.title = title;
         this.author = author;
     }
 
-    static getAllBooks() {
+    static getAllBooks(): Promise<Book[]> {
         return new Promise((resolve, reject) => {
             fs.readFile(
                 this.dbPath,
                 'utf-8',
-                (err, data) => {
+                (err: NodeJS.ErrnoException | null, data: string) => {
                     if (err) {
                         return reject(err);
                     }
 
                     resolve(JSON.parse(data));
-                })
-        })
+                });
+        });
     }
 
-    static async getBook(id) {
-        const books = await this.getAllBooks();
-        const book = books.find(book => book.id === id);
+    static async getBook(id: string): Promise<Book | undefined> {
+        const books: Book[] = await this.getAllBooks();
+        const book: Book | undefined = books.find(book => book.id === id);
 
         if (!book) {
             return;
@@ -35,8 +37,8 @@ class Book {
         return book;
     }
 
-    static async createBook(book) {
-        const books = await this.getAllBooks();
+    static async createBook(book: Book): Promise<Book> {
+        const books: Book[] = await this.getAllBooks();
 
         book.id = Date.now().toString();
         books.push(book);
@@ -46,21 +48,20 @@ class Book {
                 this.dbPath,
                 JSON.stringify(books),
                 'utf-8',
-                (err) => {
+                (err: NodeJS.ErrnoException | null) => {
                     if (err) {
                         return reject(err);
                     }
 
                     resolve(book);
                 }
-            )
-
-        })
+            );
+        });
     }
 
-    static async updateBook(id, book) {
-        const books = await this.getAllBooks();
-        const index = books.findIndex(book => book.id === id);
+    static async updateBook(id: string, book: Book): Promise<Book | undefined> {
+        const books: Book[] = await this.getAllBooks();
+        const index: number = books.findIndex(book => book.id === id);
 
         if (index === -1) {
             return;
@@ -76,21 +77,20 @@ class Book {
                 this.dbPath,
                 JSON.stringify(books),
                 'utf-8',
-                (err) => {
+                (err: NodeJS.ErrnoException | null) => {
                     if (err) {
                         return reject(err);
                     }
 
                     resolve(books[index]);
                 }
-            )
-
-        })
+            );
+        });
     }
 
-    static async deleteBook(id) {
-        const books = await this.getAllBooks();
-        const index = books.findIndex(book => book.id === id);
+    static async deleteBook(id: string): Promise<string | undefined> {
+        const books: Book[] = await this.getAllBooks();
+        const index: number = books.findIndex(book => book.id === id);
 
         if (index === -1) {
             return;
@@ -103,16 +103,14 @@ class Book {
                 this.dbPath,
                 JSON.stringify(books),
                 'utf-8',
-                (err) => {
+                (err: NodeJS.ErrnoException | null) => {
                     if (err) {
                         return reject(err);
                     }
 
                     resolve('deleted');
                 }
-            )
-        })
+            );
+        });
     }
 }
-
-module.exports = Book;
