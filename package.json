@@ -9,7 +9,7 @@
     }
   },
   "scripts": {
-    "start": "npm run build && node build/dsa.js",
+    "start": "npm run build && node build/index.js",
     "dev": "npx nodemon",
     "build": "rimraf build && npx tsc",
     "lint": "npx eslint src",
