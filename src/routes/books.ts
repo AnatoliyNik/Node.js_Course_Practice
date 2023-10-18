@@ -1,8 +1,8 @@
-const {Router} = require('express');
-const Book = require('../models/Book');
-const {response} = require('../data/constants')
+import { NextFunction, Request, Response, Router } from "express";
+import Book from "../services/book.service";
+import { response } from "../data/constants";
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * @swagger
@@ -91,14 +91,14 @@ const router = Router();
  *         $ref: '#/components/responses/ServerError'
  */
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const books = await Book.getAllBooks();
+        const books: Book[] = await Book.getAllBooks();
         res.send(books);
     } catch (err) {
         next(err);
     }
-})
+});
 
 /**
  * @swagger
@@ -121,11 +121,11 @@ router.get('/', async (req, res, next) => {
  *         $ref: '#/components/responses/ServerError'
  */
 
-router.get('/:id', async (req, res, next) => {
-    const id = req.params.id;
+router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    const id: string = req.params.id;
 
     try {
-        const book = await Book.getBook(id);
+        const book: Book | undefined = await Book.getBook(id);
 
         if (!book) {
             res.status(response.notFound.code).send(response.notFound);
@@ -135,7 +135,7 @@ router.get('/:id', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-})
+});
 
 /**
  * @swagger
@@ -160,17 +160,17 @@ router.get('/:id', async (req, res, next) => {
  *         $ref: '#/components/responses/ServerError'
  */
 
-router.post('/', async (req, res, next) => {
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const book = getBookFromRequest(req);
+        const book: Book = getBookFromRequest(req);
 
-        const newBook = await Book.createBook(book);
+        const newBook: Book = await Book.createBook(book);
 
         res.send(newBook);
     } catch (err) {
         next(err);
     }
-})
+});
 
 /**
  * @swagger
@@ -199,13 +199,13 @@ router.post('/', async (req, res, next) => {
  *         $ref: '#/components/responses/ServerError'
  */
 
-router.put('/:id', async (req, res, next) => {
-    const id = req.params.id;
+router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    const id: string = req.params.id;
 
     try {
-        const book = getBookFromRequest(req, next);
+        const book: Book = getBookFromRequest(req);
 
-        const changedBook = await Book.updateBook(id, book);
+        const changedBook: Book | undefined = await Book.updateBook(id, book);
 
         if (!changedBook) {
             res.status(response.notFound.code).send(response.notFound);
@@ -215,7 +215,7 @@ router.put('/:id', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-})
+});
 
 /**
  * @swagger
@@ -238,11 +238,11 @@ router.put('/:id', async (req, res, next) => {
  *         $ref: '#/components/responses/ServerError'
  */
 
-router.delete('/:id', async (req, res, next) => {
-    const id = req.params.id;
+router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    const id: string = req.params.id;
 
     try {
-        const result = await Book.deleteBook(id);
+        const result: string | undefined = await Book.deleteBook(id);
 
         if (!result) {
             return res.status(response.notFound.code).send(response.notFound);
@@ -252,17 +252,17 @@ router.delete('/:id', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-})
+});
 
-function getBookFromRequest(req) {
+function getBookFromRequest(req: Request): Book {
     if (!req.body.title || !req.body.author) {
-        throw new Error('Not completed request')
+        throw new Error('Not completed request');
     }
 
-    const title = String(req.body.title).trim();
-    const author = String(req.body.author).trim();
+    const title: string = String(req.body.title).trim();
+    const author: string = String(req.body.author).trim();
 
     return new Book(title, author);
 }
 
-module.exports = router;
+export default router;
