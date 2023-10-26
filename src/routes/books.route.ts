@@ -47,7 +47,7 @@ const router: Router = Router();
  *       schema:
  *         type: string
  *       required: true
- *       description: Book id
+ *       description: Item id
  *
  *   responses:
  *     ServerError:
@@ -128,7 +128,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
         const book: Book | undefined = await Book.getBook(id);
 
         if (!book) {
-            res.status(response.notFound.code).send(response.notFound);
+            return res.status(response.notFound.code).send(response.notFound);
         }
 
         res.send(book);
@@ -208,7 +208,7 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
         const changedBook: Book | undefined = await Book.updateBook(id, book);
 
         if (!changedBook) {
-            res.status(response.notFound.code).send(response.notFound);
+            return res.status(response.notFound.code).send(response.notFound);
         }
 
         res.send(changedBook);

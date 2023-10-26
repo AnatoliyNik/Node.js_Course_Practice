@@ -6,5 +6,11 @@ export default (err: Error, req: Request, res: Response, next: NextFunction): vo
         return next(err);
     }
 
-    res.status(response.internalServerError.code).json(response.internalServerError);
+    let message: string = response.internalServerError.message;
+
+    if (err.message) {
+        message = err.message;
+    }
+
+    res.status(response.internalServerError.code).json({...response.internalServerError, message});
 };
