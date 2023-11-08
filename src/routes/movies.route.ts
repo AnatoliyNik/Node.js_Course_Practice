@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import MovieModel from "../db-models/movie.model";
-import getAll from "../middleware/get-all-handler";
-import getById from "../middleware/get-by-id-handler";
-import remove from "../middleware/remove-handler";
-import create from "../middleware/create-handler";
-import update from "../middleware/update-handler";
-import getMoviesByGenre from "../middleware/get-movies-by-genre-handler";
+import getAll from "../controllers/get-all.controller";
+import getById from "../controllers/get-by-id.controller";
+import remove from "../controllers/remove.controller";
+import create from "../controllers/create.controller";
+import update from "../controllers/update.controller";
+import getMoviesByGenre from "../controllers/get-movies-by-genre.controller";
 
 const router: Router = Router();
 
@@ -123,6 +123,8 @@ router.get('/:id', getById(MovieModel));
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Movie'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  *       500:
  *         $ref: '#/components/responses/ServerError'
  */
@@ -148,6 +150,8 @@ router.get('/genre/:genreName', getMoviesByGenre);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Movie'
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
  *       500:
  *         $ref: '#/components/responses/ServerError'
  */
@@ -175,6 +179,8 @@ router.post('/', create(MovieModel));
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Movie'
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  *       500:

@@ -1,4 +1,4 @@
-type Statuses = 'ok' | 'notFound' | 'internalServerError';
+type Statuses = 'ok' | 'notFound' | 'internalServerError' | 'badRequest';
 
 interface Response {
     code: number;

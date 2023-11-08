@@ -3,6 +3,7 @@ import MovieModel from "../db-models/movie.model";
 import GenreModel from "../db-models/genre.model";
 import { Movie } from "../models/movie.model";
 import { Genre } from "../models/genre.model";
+import { errorName } from "../data/constants";
 
 export default async function getMoviesByGenre(req: Request, res: Response, next: NextFunction): Promise<void> {
     const genreName: string = req.params.genreName.toLowerCase().trim();
@@ -11,7 +12,10 @@ export default async function getMoviesByGenre(req: Request, res: Response, next
         const genre: Genre | null = await GenreModel.findOne({name: genreName}).lean();
 
         if (!genre) {
-            return next(new Error(`Genre "${genreName}" not found in the database`));
+            const error: Error = new Error(`Genre "${genreName}" does not exist in the database`);
+            error.name = errorName.notFoundError;
+
+            return next(error);
         }
 
         const movies: Movie[] = await MovieModel.find({genre: {$in: genreName}}).lean();

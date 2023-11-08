@@ -13,6 +13,10 @@ export const response: Responses = {
         code: 200,
         message: 'OK'
     },
+    badRequest: {
+        code: 400,
+        message: 'Bad Request'
+    },
     notFound: {
         code: 404,
         message: 'Not Found'
@@ -45,4 +49,9 @@ export enum genreValidationMessage {
 export enum movieValidationMessage {
     genreDoesNotExist = 'Genre "{VALUE}" does not exist. Please add it to the database first',
     emptyArrayOfGenres = 'Movie must have at least one genre'
+}
+
+export enum errorName {
+    validationError = 'ValidationError',
+    notFoundError = 'NotFoundError',
 }

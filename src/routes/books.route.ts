@@ -62,6 +62,12 @@ const router: Router = Router();
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Response'
+ *     BadRequest:
+ *       description: Bad request
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Response'
  */
 
 
