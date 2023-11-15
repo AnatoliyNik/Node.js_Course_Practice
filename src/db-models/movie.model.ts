@@ -1,18 +1,23 @@
 import { model, models, Schema } from "mongoose";
-import { modelName, movieValidationMessage } from "../data/constants";
+import {
+    modelName,
+    MOVIE_DESCRIPTION_MAX_LENGTH,
+    MOVIE_TITLE_MAX_LENGTH,
+    movieValidationMessage
+} from "../data/constants";
 import { Movie } from "../models/movie.model";
 
 const movieSchema: Schema<Movie> = new Schema<Movie>({
     title: {
         type: String,
         required: true,
-        maxLength: 300,
+        maxLength: MOVIE_TITLE_MAX_LENGTH,
         trim: true
     },
     description: {
         type: String,
         required: true,
-        maxLength: 2000,
+        maxLength: MOVIE_DESCRIPTION_MAX_LENGTH,
         trim: true
     },
     releaseDate: {
