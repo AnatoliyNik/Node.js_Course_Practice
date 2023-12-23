@@ -55,3 +55,7 @@ export enum errorName {
     validationError = 'ValidationError',
     notFoundError = 'NotFoundError',
 }
+
+export const GENRE_NAME_MAX_LENGTH = 100;
+export const MOVIE_TITLE_MAX_LENGTH = 300;
+export const MOVIE_DESCRIPTION_MAX_LENGTH = 2000;

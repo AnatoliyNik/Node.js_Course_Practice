@@ -9,4 +9,8 @@ app.use(json());
 app.use(router);
 app.use(errorHandler);
 
-start(app);
+if (process.env.NODE_ENV !== 'test') {
+    start(app);
+}
+
+export default app;

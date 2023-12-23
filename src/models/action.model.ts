@@ -1,0 +1,1 @@
+export type Action = 'get' | 'getById' | 'getMoviesByGenre' | 'post' | 'put' | 'delete';
